@@ -1,0 +1,96 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <iomanip>
+using namespace std;
+typedef double db;
+class Student {
+public:
+	char number[10];
+	char name[10];
+	db grade;
+
+	friend istream& operator >>(istream& in, Student* stu);
+	friend ostream& operator <<(ostream& in, Student* stu);
+	char* Getnumber();
+	char* Getname();
+	db Getgrade();
+};
+
+istream& operator>> (istream& in, Student* stu)
+{
+	ofstream out("stud,dat");
+	for (int i = 0;i < 5;i++)
+	{
+		cout << "第" << i + 1 << "个学生（学号 姓名 成绩):";
+		cin >> stu[i].number;
+		cin >> stu[i].name;
+		cin >> stu[i].grade;
+		out.write((char*)&stu[i], sizeof(Student));
+	}
+	out.close();
+	return in;
+}
+
+ostream& operator<< (ostream& out, Student& stu)
+{
+	ifstream in("stud.dat");
+	cout << "学号 姓名 成绩" << endl;
+	for (int i = 1;i <= 5;i++)
+	{
+		in.read((char*)&stu, sizeof(Student));
+		out << stu.number << " " << stu.name << " " << stu.grade << endl;
+	}
+	in.close();
+	return out;
+}
+char* Student::Getnumber() {
+	return number;
+}
+char* Student::Getname() {
+	return name;
+}
+double Student::Getgrade() {
+	return grade;
+}
+int main()
+{
+	Student* stuin = new Student[5];
+	Student stuout;
+	int op;
+	while (1)
+	{
+		cout << "选择(1:输入数据 2:输出数据 3:按姓名查找数据 其他退出):";
+		cin >> op;
+		switch (op)
+		{
+		case 1:
+			cout << "输入数据" << endl;
+			cout << "学生人数 :5" << endl;
+			cin >> stuin;
+			break;
+
+		case 2:
+			cout << stuout;
+			break;
+
+		case 3:
+			cout << "输入姓名：";
+			char name1[20];
+			cin >> name1;
+			cout << "输出的匹配结果是 ：" << endl;
+			cout << " 学号 姓名 成绩" << endl;
+			for (int i = 0;i < 5;i++)
+			{
+				if (strstr(stuin[i].Getname(), name1) != 0 || strcmp(stuin[i].Getname(), name1) == 0)
+					cout << stuin[i].Getnumber() << " " << stuin[i].Getname() << " " << stuin[i].Getgrade() << endl;
+				break;
+			}
+			break;
+		case 0:
+			exit(0);
+			break;
+		}
+	}
+		return 0;
+}

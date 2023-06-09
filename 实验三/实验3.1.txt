@@ -1,0 +1,176 @@
+#include<iostream>
+#include<cmath>
+#define pi 3.14
+using namespace std;
+class Geometric_shape	//几何图形
+{
+public:
+	virtual void Show() = 0;
+	virtual double perimeter() { return 0; }; //周长 
+	virtual double area() { return 0; };		  //面积 
+	virtual double volume() { return 0; };     //体积 
+};
+class Rectangle :public Geometric_shape
+{
+protected:
+	int length, width;
+public:
+	Rectangle(int a, int b)  {
+		this->length = a;
+		this->width = b;
+	}
+	virtual void Show() {
+		cout << "矩形长为：" << length << "，宽为："  << width << endl;
+	}
+	virtual double perimeter() { return 2 * (length + width); }
+	virtual double area() { return length * width; }
+	virtual double volume() { return 0; }
+
+};
+
+class Circle :public Geometric_shape
+{
+protected:
+	int r;
+public:
+	Circle(int a)  {
+		this->r = a;
+	}
+	virtual void Show() {
+		cout << "圆的半径为：" << r << endl;
+	}
+	virtual double perimeter() { return 2 * pi * r; }
+	virtual double area() { return pi*pow(r,2); }
+	virtual double volume() { return 0; }
+
+};
+
+class Triangle :public Geometric_shape
+{
+protected:
+	int A, B, C;//三角形的三个边
+public:
+	Triangle(int a, int b, int c)  {
+		this->A = a;
+		this->B = b;
+		this->C = c;
+	}
+	void Show() {
+		cout << "三角形三边为：" << A << "," << B << "," << C << endl;
+	}
+	virtual double perimeter() { return A + B + C; }
+	virtual double area() {
+		double p = (A + B + C) / 2;
+		return sqrt(p * (p - A) * (p - B) * (p - C));
+	}
+	virtual double volume() { return 0; }
+
+};
+
+class Box :public Rectangle
+{
+private:
+	int height;
+public:
+	Box(int a, int b, int c) :Rectangle(a, b) {
+		this->height = c;
+	}
+	void Show() {
+		cout << "长方体的长,宽,高分别为：" << length << "," << width << "," << height << endl;
+	}
+	double volume() { return area() * height; }
+
+};
+
+class Cylinder :public Circle
+{
+private:
+	int height;
+public:
+	Cylinder(int a, int b) :Circle(a) {
+		this->height = b;
+	}
+	void Show() {
+		cout << "圆柱底面半径和高分别为：" << r << "," << height << endl;
+	} 
+	double volume() { return area() * height; }
+
+};
+
+class Cone :public Circle
+{
+private:
+	int height;
+public:
+	Cone(int a, int b) :Circle(a) {
+		this->height = b;
+	}
+	void Show() {
+		cout << "圆锥底面半径和高分别为：" << r << "," << height << endl;
+	} double volume() { return area() * height / 3; }
+
+};
+
+class T_pyramid :public Triangle
+{
+private:
+	int height;
+public:
+	T_pyramid(int a, int b, int c, int d) :Triangle(a, b, c) {
+		this->height = d;
+	}
+	void Show() {
+		cout << "三棱锥底边三角形三边和高度分别为：" << A << "," << B << "," << C << "," << height << endl;
+	}
+	double volume() { return area() * height / 3; }
+
+};
+
+class T_prism :public Triangle
+{
+private:
+	int height;
+public:
+	T_prism(int a, int b, int c, int d) :Triangle(a, b, c), height(d) {
+		this->height = d;
+	}
+	void Show() {
+		cout << "三棱柱底边三角形三边和高度分别为：" << A << "," << B << "," << C << "," << height << endl;
+	}
+	double volume() { return area() * height; }
+
+};
+int main()
+{
+	Geometric_shape* gs[] = { 
+new		Circle(10),
+new 	Rectangle(6,8),
+new		Triangle(3,4,5),
+new 	Box(6,8,3),
+new	 	Cylinder(10,3),
+new 	Cone(10,3),
+new		T_pyramid(3,4,5,3),
+new 	T_prism(3,4,5,3) 
+	};
+	for (int i = 0; i < 8; i++)
+	{
+		gs[i]->Show();
+		cout << endl;
+	}
+
+	cout << "平面图形：" << endl;
+	for (int i = 0; i < 3; i++)
+	{
+		cout << "图形周长：" << gs[i]->perimeter() << '\t';
+		cout << "图形面积：" << gs[i]->area() << '\t';
+		cout << "图形体积：" << gs[i]->volume() << endl;
+	}
+	cout << "立体图形：" << endl;
+	for (int i = 3; i < 8; i++)
+	{
+		cout << "图形底周长：" << gs[i]->perimeter() << '\t';
+		cout << "图形底面积：" << gs[i]->area() << '\t';
+		cout << "图形体积  ：" << gs[i]->volume() << endl;
+	}
+	return 0;
+}

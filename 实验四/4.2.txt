@@ -1,0 +1,35 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class Telephone {
+public:
+	string area;
+	string phone;
+
+	Telephone(){}
+	friend istream& operator>>(istream& in, Telephone& tel);
+	friend ostream& operator<<(istream& out, Telephone& tel);
+};
+istream& operator >>(istream& in, Telephone& t)
+{
+	cout << "请输入电话号码：";
+	string str;
+	in >> str;
+	int begin = str.find(")");
+	t.area = str.substr(1, begin - 1);
+	int l = str.length();
+	t.phone = str.substr(begin + 1, l);
+	return in;
+}
+ostream& operator<<(ostream& out, Telephone& t) {
+	cout << "输出电话号码为：";
+	out << "(027)" << t.phone << endl;
+	return out;
+}
+
+int main() {
+	Telephone t;
+	cin >> t;
+	cout << t;
+	return 0;
+}

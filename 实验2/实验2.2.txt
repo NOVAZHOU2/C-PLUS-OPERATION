@@ -1,0 +1,81 @@
+#include <iostream>
+using namespace std;
+#define pi 3.14
+class Point{
+public:
+	Point() { x = 0; y = 0; }
+	Point(double xv,double yv) { x = xv;y = yv; }
+	Point(Point & pt) { x = pt.x; y = pt.y; }
+	double getx() { return x; }
+	double gety() { return y; }
+	double Area() { return 0; }
+	void Show() { cout << "x=" << x << ' ' << "y=" << y << endl; }
+private:
+	double x,y;
+};
+class Rectangle:public Point {
+public:
+	Rectangle(int length, int width, int pointx, int pointy)
+	{
+		this->length = length;
+		this->width = width;
+		Point::Point(pointx, pointy);
+	}
+	int position(Point  &p)
+	{
+		if (p.getx() < Point::getx() || p.gety() > Point::gety() || p.getx() > Point::getx() + length || p.gety() < Point::gety() - width)
+		{
+			return 0;//在长方形外
+		}
+		else if (p.getx() > Point::getx() && p.gety() < Point::gety() && p.getx() < Point::getx() + length && p.gety() > Point::gety() - width)
+		{
+			return 1;//在长方形内
+		}
+		else return 2;//在长方形上
+		
+	}
+	int area()
+	{
+		return width * length;
+	}
+	int round()
+	{
+		return 2 * (length + width);
+	}
+private:
+	int length, width;
+};
+class Circle :public Point {
+public:
+	Circle(int R, int pointx, int pointy)
+	{
+		this->R = R;
+		Point::Point(pointx, pointy);
+	}
+	int position(Point& p)
+	{
+		if ((p.getx() - Point::getx()) * (p.getx() - Point::getx()) + (p.gety() - Point::gety()) * (p.gety() - Point::gety()) > R * R)
+		{
+			return 0;//在圆外
+		}
+		else if ((p.getx() - Point::getx()) * (p.getx() - Point::getx()) + (p.gety() - Point::gety()) * (p.gety() - Point::gety()) < R * R)
+		{
+			return 1;//在圆内
+		}
+		else return 2;//在圆上
+	}
+	int area()
+	{
+		return  pi * R *R;
+	}
+	int round()
+	{
+		return 2 * pi *R;
+	}
+private:
+	int R;
+};
+int main()
+{
+	return 0;
+}

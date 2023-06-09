@@ -1,0 +1,52 @@
+#include <iostream>
+using namespace std;
+typedef double db;
+class complex {
+private:
+	 db real;
+	 db image;
+public:
+	complex(db r = 0,db i = 0)
+	{
+		this->real = r;
+		this->image = i;
+	}
+	void print();
+	complex operator +(const complex& rhs);
+	complex operator -(const complex& rhs);
+};
+void complex::print()
+{
+	if (image > 0)
+	{
+		cout << real << "+" <<image<<"i"<< endl;
+	}
+	else if(image<0)
+	{
+		cout << real << image << "i" << endl;
+	}
+	else cout << real << endl;
+}
+complex complex::operator +(const complex& rhs)
+{
+	complex k;
+	k.real = real + rhs.real;
+	k.image = image + rhs.image;
+	return k;
+}
+complex complex::operator -(const complex& rhs)
+{
+	complex k;
+	k.real = real - rhs.real;
+	k.image = image - rhs.image;
+	return k;
+}
+int main()
+{
+	complex a(6, 7);
+	complex b(7, 8);
+	complex ans1 = a + b;
+	complex ans2 = a - b;
+	ans1.print();
+	ans2.print();
+}
